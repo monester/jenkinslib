@@ -21,9 +21,6 @@ class Build(object):
     def get_value(self, key):
         return _get_value(key, self.build)
 
-    def __getattr__(self, item):
-        return getattr(self.build, item)
-
     def __getitem__(self, item):
         return self.build.get(item)
 
@@ -32,7 +29,6 @@ class Build(object):
 
 
 class BaseJobView(object):
-
     def __init__(self, jenkins, name):
         self.jenkins = jenkins
         self.name = name
@@ -54,11 +50,10 @@ class BaseJobView(object):
 
 class Job(BaseJobView):
     def __init__(self, *args, **kwargs):
-        self.filters = kwargs.pop('filters', {})
         super(Job, self).__init__(*args, **kwargs)
 
-    def check_function(self, build, filters=None):
-        filters = filters or self.filters
+    @staticmethod
+    def check_function(build, filters=None):
         if not filters:
             return True
 
