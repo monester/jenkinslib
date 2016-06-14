@@ -49,9 +49,6 @@ class BaseJobView(object):
 
 
 class Job(BaseJobView):
-    def __init__(self, *args, **kwargs):
-        super(Job, self).__init__(*args, **kwargs)
-
     @staticmethod
     def check_function(build, filters=None):
         if not filters:
