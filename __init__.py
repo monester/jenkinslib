@@ -12,6 +12,7 @@ def _get_value(key, values):
     for value in values:
         if skey in value:
             return _get_value(keys, value[skey]) if keys else value[skey]
+    return ''
 
 
 class Build(object):
@@ -20,6 +21,9 @@ class Build(object):
 
     def get_value(self, key):
         return _get_value(key, self.build)
+
+    def __iter__(self):
+        return self.build
 
     def __getitem__(self, item):
         return self.build.get(item)
@@ -67,7 +71,7 @@ class Job(BaseJobView):
                 if new_v not in actions_parameters:
                     return False
         # check for everything else
-        return all(build.get_value(k) == v for k, v in filters.items())
+        return all(v in build.get_value(k) for k, v in filters.items())
 
     def fetch_latest(self, params=None):
         params = params or {}
